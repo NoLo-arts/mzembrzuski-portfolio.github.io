@@ -1,0 +1,457 @@
+/* Styl resetu */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', monospace;
+    /* Czcionka */
+    box-sizing: border-box;
+    color: rgb(0, 0, 0);
+}
+
+body,
+html {
+    overflow-x: hidden;
+}
+
+html {
+    scroll-behavior: smooth;
+    /* Płynne przewijanie */
+}
+
+/* Ukryj domyślnie zawartość strony */
+.content {
+    display: none;
+}
+
+/* Loader – pełnoekranowy */
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    z-index: 9999;
+}
+
+/* Spinner – animowane kółko */
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top: 4px solid rgb(0, 0, 0);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.gap {
+    background-color: transparent;
+}
+
+body {
+    background: #ffffff;
+    /* Kolor tła */
+    color: #ffffff;
+    /* Kolor tekstu */
+    /*rodzaj czcionki*/
+}
+
+/* Styl nagłówka */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    z-index: 10;
+    background: white;
+    /* Kolor tła nagłówka */
+    color: rgb(0, 0, 0);
+
+}
+
+.logo {
+    margin-bottom: 10px;
+    /* Odstęp pomiędzy logo a nawigacją */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    color: rgb(0, 0, 0);
+}
+
+.nav-links a {
+    display: inline-block;
+    color: #f5eee1;
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+
+}
+
+.nav-links a:hover {
+    color: #fda400;
+}
+
+.Contactlink :hover {
+    color: #fda400;
+}
+
+body a :hover {
+    color: #fda400;
+}
+
+#buttonlike:hover {
+    color: #fda400;
+}
+
+.art {
+    display: flex;
+    height: 100vh;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.about-container {
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255);
+    /* Przezroczyste tło */
+    padding: 20px;
+    /* Padding wewnętrzny */
+    font-family: 'centrury-gothic', sans-serif;
+}
+
+.gallery-container {
+    gap: 20px;
+    /* Odstęp między obrazkami */
+    padding: 20px;
+    /* Padding wewnętrzny */
+    background-color: rgba(255, 255, 255);
+    text-align: center;
+}
+
+/* Stylowanie kontenera wideo */
+.video-container {
+    position: relative;
+    width: auto;
+    overflow: hidden;
+}
+
+.video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    z-index: -5;
+    filter: blur(5px);
+    /* Rozmycie wideo */
+    overflow: hidden;
+
+}
+
+.fotos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    display: inline-block;
+}
+
+.Contact-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255);
+    font-family: 'centrury-gothic', sans-serif;
+}
+
+/* Stylowanie nakładki tekstowej na wideo */
+.overlay {
+    align-content: center;
+    justify-content: center;
+}
+
+#buttonlike {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+#about2 {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.hidden {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+}
+
+.visible {
+    max-height: 500px;
+}
+
+#buttonbonus {
+    background: none;
+    border: none;
+    padding: 10px;
+    font-size: 20px;
+}
+
+#buttonbonus:hover {
+    color: #fda400;
+}
+
+.aboutme1 {
+    display: flex;
+    align-items: stretch;
+    height: auto;
+}
+
+.left {
+    flex: 0 0 auto;
+}
+
+.left img {
+    max-height: 800px;
+    height: auto;
+    width: 40vw;
+    display: block;
+}
+
+.text-about {
+    flex: 1;
+    display: flex;
+    line-height: 1.4;
+}
+
+#textwrapper1 {
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+    padding-right: 20px;
+    justify-content: space-between;
+    font-size: calc(0.03 * min(100vh, 100vw));
+    height: 100%;
+}
+
+#textwrapper2 {
+    display: flex;
+    padding-left: 20px;
+    padding-right: 20px;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: calc(0.03 * min(100vh, 100vw));
+    height: 100%;
+}
+
+.aboutme2 {
+    display: flex;
+    align-items: stretch;
+}
+
+#buttonbonus {
+    padding-left: 20px;
+    padding-top: 20px;
+}
+
+
+/* gallery */
+
+.gallery {
+    column-count: 3;
+    column-gap: 15px;
+    width: 100%;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.gallery-item {
+    width: 100%;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: inline-block;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+/* Styl dla modala */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+}
+
+.modal-content {
+    position: relative;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    max-width: 80%;
+    max-height: 80%;
+}
+
+.modal-content img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    max-height: 90vh;
+    justify-content: center;
+    align-items: center;
+    padding-right: 20px;
+    max-width: 60vw;
+}
+
+#modalImage {
+    position: relative;
+    max-width: auto;
+    max-height: 90vh;
+}
+
+.Modalimagediv {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#modalText {
+    padding: 60px;
+}
+
+.modal-content p {
+    color: white;
+    margin-top: 10px;
+    font-size: 10px;
+    text-align: center;
+    max-width: 20vw;
+}
+
+.modal-content h3 {
+    color: white;
+    margin-top: 10px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.modal-content i {
+    color: white;
+}
+
+/* Tu są przyciski od zmieniania zdjęć w galerii */
+.nav-button {
+    position: fixed;
+    top: 50%;
+    background-color: rgba(0, 0, 0, 0.0);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+
+#prevButton {
+    left: 5vw;
+}
+
+#nextButton {
+    right: 5vw;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    color: white;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+/* zmienianie zdjęć w modalu */
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    /* ustaw przyciski jeden pod drugim */
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    /* odstęp od obrazka */
+    height: 100%;
+
+}
+
+.prev-gallery,
+.next-gallery {
+    width: 36px;
+    height: 36px;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    /* jak chcesz strzałki w pionie */
+}
+
+/* kropeczki */
+.dot-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.dot.active {
+    background-color: white;
+}

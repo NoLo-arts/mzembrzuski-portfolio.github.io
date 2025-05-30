@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello!</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/gif" href="obrazki/mój-ryj.gif">
+</head>
+
+<body>
+    <div id="content">
+        <!-- loader -->
+        <div id="loader">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+
+
+
+        <!-- Górny nagłówek z logo i zakładkami -->
+        <header>
+            <div class="logo">
+                <pre><h1> <small><small>Mikołaj</small></small> "NoLo" <small><small>Zembrzuski</small></small></h1></pre>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="AboutMe.html">About</a></li>
+                    <li><a href="Gallery.html">Gallery</a></li>
+                    <li> <button id="buttonlike" onclick="scrollToBottom()">Contact</button></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Przycisk do scrollowania -->
+        <script>
+            function scrollToBottom() {
+                document.getElementById("Contact").scrollIntoView({
+                    behavior: "smooth",
+                    block: "end"
+                });
+            }
+        </script>
+
+        <!-- Tło wideo -->
+        <div class="video-container">
+            <video autoplay muted loop>
+                <source src="obrazki/Comp 1.mp4" type="video/mp4">
+            </video>
+
+            <!--wszystkie nakładki -->
+            <div class="overlay">
+                <div class="gap" style="height: 300px;"></div>
+                <div id="About" class="about-container">
+                    <h2>About Me</h2>
+                    <p>My name is Mikołaj Zembrzuski, but I'm better known as NoLo. What does "NoLo" means? Nothing
+                        specific, but it's been part of me since 2014. Sometimes I make cool art/projects and this whole
+                        website is about it. </p>
+                    <a href="AboutMe.html" style="text-decoration: none;">
+                        <h3>See more...</h3>
+                    </a>
+                </div>
+                <div class="gap" style="height: 200px;"></div>
+                <div class="gallery-container">
+                    <h2>My work:</h2>
+                    <br>
+                    <div class="fotos">
+                        <img src="obrazki/pokój dół.png" height="300">
+                        <img src="obrazki/daltonizm full res.png" height="300">
+                        <img src="obrazki/mikolaj-zembrzuski-stoned-jpg.jpg" height="300">
+                        <img src="obrazki/yellowfeel (1).png" height="300">
+                    </div>
+                    <br><br>
+                    <a style="text-decoration: none;" href="Gallery.html">
+                        <h3>Go to gallery...</h3>
+                    </a>
+
+                </div>
+            </div>
+            <!--Contact and shit -->
+            <div class="gap" style="height: 150px;"></div>
+            <footer id="Contact" class="Contact-container">
+                <br><br>
+                <H1>Contact</H1>
+                <p>zembrzuskimikolaj@gmail.com</p>
+                <a class="Contactlink" href="https://www.instagram.com/nolo_arts/" style>Instagram</a>
+                <a class="Contactlink" href="https://www.linkedin.com/in/mikołaj-zembrzuski-495576292/">Linked In</a>
+                <br><br><br>
+            </footer>
+            <script src="script.js"></script>
+        </div>
+</body>
+
+</html>
