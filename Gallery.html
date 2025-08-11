@@ -7,6 +7,8 @@
     <title>Gallery!</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/gif" href="obrazki/mój-ryj.gif">
+    <meta name="description" content="Oficial page of Mikołaj Zembrzuski - graphic designer, portfolio, contact and projects.">
+    <meta name="author" content="Mikołaj Zembrzuski">
 </head>
 
 <body>
@@ -69,7 +71,7 @@
                     alt="Zdjęcie 9" data-description="<h3>Zaya & Shō</h3><p>A little bit of character design</p>">
 
                 <img class="gallery-item" id="image-11" src="obrazki/akademic lgo przezźroczyste 2.jpg" alt="Zdjęcie 9"
-                    data-description="<h3>Akademic.</h3><p>I was a main graphic designer in this proeject.<i>We won...</i> (more in 'About' section)</p>"
+                    data-description="<h3>Akademic.</h3><p>I was a main graphic designer in this proeject.<i> We won...</i> (more in 'About' section)</p>"
                     data-gallery="0"
                     data-images='["obrazki/akademic lgo przezźroczyste 2.jpg","obrazki/Akademic (1).jpg","obrazki/Akademic (2).jpg","obrazki/Akademic (3).jpg","obrazki/Akademic (4).jpg","obrazki/Akademic (5).jpg"]'>
 
@@ -78,19 +80,33 @@
             </div>
 
             <div id="myModal" class="modal">
-                <span id="closeButton" class="close">&times;</span>
-                <div class="modal-content">
-                    <button id="prevButton" class="nav-button">&#10094;</button>
-                    <div class="Modalimagediv">
-                        <img id="modalImage">
-                        <div class="button-container">
-                            <button class="next-gallery"></button>
-                            <div class="dot-container"></div>
-                            <button class="prev-gallery" style=" transform: rotate(180deg);"></button>
-                        </div>
-                    </div>
-                    <p id="modalText"></p>
-                    <button id="nextButton" class="nav-button">&#10095;</button>
+    <span id="closeButton" class="close">&times;</span>
+
+    <!-- Przyciski nawigacyjne dla desktopa -->
+    <button id="prevButton" class="nav-button">&#10094;</button>
+
+    <div class="modal-content">
+        <!-- Obrazek jest głównym elementem -->
+        <img id="modalImage">
+
+        <!-- NOWA I PRAWIDŁOWA STRUKTURA -->
+    <div class="button-container">
+        <button class="next-gallery"></button>
+        <button class="prev-gallery" style="transform: rotate(180deg);"></button>
+    </div>
+    <div class="dot-container"></div>
+
+        <!-- Nowy kontener na tekst i kropki (głównie dla widoku mobilnego) -->
+        <div class="modal-info-container">
+            <div id="modalText"></div>
+            <!-- Tutaj JS dynamicznie skopiuje kropki na mobilce -->
+            <div class="mobile-dot-container"></div>
+        </div>
+    </div>
+
+    <!-- Przycisk nawigacyjny dla desktopa -->
+    <button id="nextButton" class="nav-button">&#10095;</button>
+</div>
                 </div>
             </div>
         </div>

@@ -1,251 +1,149 @@
-window.addEventListener("load", () => {
-  console.log("Strona się załadowała."); // Debug
+document.addEventListener('DOMContentLoaded', function () {
+    // --- LOADER I FUNKCJE GLOBALNE ---
+    window.onload = function () {
+        const loader = document.querySelector('.loader');
+        const content = document.querySelector('.content');
+        if (loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => { loader.style.display = 'none'; }, 500);
+        }
+        if (content) {
+            content.style.display = 'block';
+            setTimeout(() => { content.style.opacity = '1'; }, 50);
+        }
+    };
+    window.toggleText = function() {
+        const textElement = document.getElementById("text");
+        if (textElement) textElement.classList.toggle("visible");
+    };
 
-  // Pobieramy wszystkie loadery i kontent
-  const loaders = document.querySelectorAll(".loader");
-  const contents = document.querySelectorAll(".content");
+    // --- LOGIKA GALERII ---
+    const galleryContainer = document.querySelector('.gallery');
+    if (galleryContainer) {
+        // A. Pobranie elementów
+        const images = document.querySelectorAll('.gallery-item');
+        const modal = document.getElementById('myModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalText = document.getElementById('modalText');
+        const closeButton = document.getElementById('closeButton');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        const buttonContainer = document.querySelector('.button-container');
+        const prevGalleryButton = document.querySelector('.prev-gallery');
+        const nextGalleryButton = document.querySelector('.next-gallery');
+        const dotContainer = document.querySelector('.dot-container');
 
-  loaders.forEach(loader => loader.style.display = "none");
-  contents.forEach(content => content.style.display = "block");
-});
+        // B. Zmienne stanu
+        let currentIndex = 0;
+        let currentSubImageIndex = 0;
+        let subImages = [];
+        let touchStartX = 0, touchStartY = 0;
 
-function toggleText() {
-  const textElement = document.getElementById("text");
-  textElement.classList.toggle("visible");
-}
+        // --- DODAJEMY SYMBOLE STRZAŁEK ---
+        if (prevGalleryButton && nextGalleryButton) {
+            prevGalleryButton.innerHTML = '▲';
+            nextGalleryButton.innerHTML = '▲';
+        }
+        
+        // C. Główne funkcje
+        function openModal(index) {
+            currentIndex = index;
+            const item = images[index];
+            
+            modalText.innerHTML = item.dataset.description || '';
+            subImages = JSON.parse(item.dataset.images || '[]');
+            currentSubImageIndex = 0;
 
+            // --- FINALNA POPRAWKA LOGIKI POKAZYWANIA/UKRYWANIA ---
+            if (subImages.length > 1) {
+                modalImage.src = subImages[0];
+                buttonContainer.style.display = 'flex';
+                dotContainer.style.display = 'flex'; // Zawsze próbujemy pokazać kropki
+                createDots(subImages.length);
+            } else {
+                modalImage.src = item.src;
+                buttonContainer.style.display = 'none';
+                dotContainer.style.display = 'none';
+            }
+            
+            modal.style.display = 'flex';
+            history.pushState(null, null, `#image-${index}`);
+        }
 
-// === Galeria ===
+        function closeModal() {
+            modal.style.display = 'none';
+            history.pushState(null, null, window.location.pathname);
+        }
 
+        function changeImage(direction) {
+            openModal((currentIndex + direction + images.length) % images.length);
+        }
 
-// Pobieramy wszystkie obrazki z galerii
-const images = document.querySelectorAll('.gallery-item');
-const modal = document.getElementById('myModal');
-const modalImage = document.getElementById('modalImage');
-const modalText = document.getElementById('modalText');
-const closeButton = document.getElementById('closeButton');
-const prevButton = document.getElementById('prevButton');
-const nextButton = document.getElementById('nextButton');
+        function changeSubImage(direction) {
+            if (subImages.length <= 1) return;
+            currentSubImageIndex = (currentSubImageIndex + direction + subImages.length) % subImages.length;
+            modalImage.src = subImages[currentSubImageIndex];
+            updateActiveDots();
+        }
 
+        function createDots(count) {
+            dotContainer.innerHTML = '';
+            for (let i = 0; i < count; i++) {
+                const dot = document.createElement('span');
+                dot.className = 'dot';
+                dot.addEventListener('click', () => {
+                    currentSubImageIndex = i;
+                    modalImage.src = subImages[i];
+                    updateActiveDots();
+                });
+                dotContainer.appendChild(dot);
+            }
+            updateActiveDots();
+        }
 
-let currentIndex = 0;
+        function updateActiveDots() {
+            Array.from(dotContainer.children).forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSubImageIndex);
+            });
+        }
+        
+        function handleTouchStart(e) { touchStartX = e.changedTouches[0].screenX; touchStartY = e.changedTouches[0].screenY; }
+        function handleTouchEnd(e) {
+            const touchEndX = e.changedTouches[0].screenX;
+            const touchEndY = e.changedTouches[0].screenY;
+            const diffX = touchEndX - touchStartX;
+            const diffY = touchEndY - touchStartY;
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                if (Math.abs(diffX) > 50) changeImage(diffX > 0 ? -1 : 1);
+            } else {
+                if (Math.abs(diffY) > 50) changeSubImage(diffY > 0 ? -1 : 1);
+            }
+        }
 
-// === Funkcja otwierająca modal ===
-function openModal(index) {
-  currentIndex = index;
-  const image = images[index];
+        // D. Event Listenery
+        images.forEach((img, index) => img.addEventListener('click', (e) => { e.preventDefault(); openModal(index); }));
+        closeButton.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        prevButton.addEventListener('click', () => changeImage(-1));
+        nextButton.addEventListener('click', () => changeImage(1));
+        prevGalleryButton.addEventListener('click', () => changeSubImage(1));
+        nextGalleryButton.addEventListener('click', () => changeSubImage(-1));
+        modal.addEventListener('touchstart', handleTouchStart);
+        modal.addEventListener('touchend', handleTouchEnd);
 
-  // 🔥 Wczytujemy całą galerię z data-images
-  currentGallery = JSON.parse(image.dataset.images || '[]');
-  currentGalleryIndex = 0;
-
-  if (currentGallery.length > 0) {
-    modalImage.src = currentGallery[currentGalleryIndex];
-    createDots(currentGallery.length);
-  }
-  else {
-    modalImage.src = image.src;
-  }
-
-  modalText.innerHTML = image.dataset.description;
-  modal.style.display = 'flex';
-  history.pushState(null, "", `#image-${index}`);
-  showDots();
-  hideDots();
-}
-
-// === Nawigacja między obrazkami ===
-function showNext() {
-  currentIndex = (currentIndex + 1) % images.length;
-  const image = images[currentIndex];
-
-  currentGallery = JSON.parse(image.dataset.images || '[]');
-  currentGalleryIndex = 0;
-
-  if (currentGallery.length > 0) {
-    modalImage.src = currentGallery[currentGalleryIndex];
-    createDots(currentGallery.length);
-    updateDots();
-  } else {
-    modalImage.src = image.src;
-    document.querySelector('.dot-container').innerHTML = ''; // brak kropek
-  }
-
-  modalText.innerHTML = image.dataset.description;
-  history.pushState(null, "", `#image-${currentIndex}`);
-  showDots();
-  hideDots();
-}
-
-function showPrev() {
-  currentIndex = (currentIndex - 1 + images.length) % images.length;
-  const image = images[currentIndex];
-
-  currentGallery = JSON.parse(image.dataset.images || '[]');
-  currentGalleryIndex = 0;
-
-  if (currentGallery.length > 0) {
-    modalImage.src = currentGallery[currentGalleryIndex];
-    createDots(currentGallery.length);
-    updateDots();
-  } else {
-    modalImage.src = image.src;
-    document.querySelector('.dot-container').innerHTML = ''; // brak kropek
-  }
-
-  modalText.innerHTML = image.dataset.description;
-  history.pushState(null, "", `#image-${currentIndex}`);
-  showDots();
-  hideDots();
-}
-
-// === Event Listenery ===
-images.forEach((img, index) => {
-  img.addEventListener('click', (event) => {
-    event.preventDefault();
-    openModal(index);
-  });
-});
-
-// zamykanie modala
-closeButton.addEventListener('click', () => {
-  modal.style.display = 'none';
-  history.pushState(null, "", window.location.pathname);
-});
-
-nextButton.addEventListener('click', showNext);
-prevButton.addEventListener('click', showPrev);
-
-window.addEventListener('click', (event) => {
-  if (event.target === modal) {
-    modal.style.display = 'none';
-    history.pushState(null, "", window.location.pathname);
-  }
-});
-
-// === Sprawdzenie URL po załadowaniu strony ===
-window.addEventListener('DOMContentLoaded', () => {
-  const hash = window.location.hash;
-  if (hash) {
-    const index = parseInt(hash.replace('#image-', ''));
-    if (!isNaN(index) && images[index]) {
-      openModal(index);
+        document.addEventListener('keydown', (e) => {
+            if (modal.style.display !== 'flex') return;
+            const keyMap = { 'Escape': closeModal, 'ArrowLeft': () => changeImage(-1), 'ArrowRight': () => changeImage(1), 'ArrowUp': () => changeSubImage(-1), 'ArrowDown': () => changeSubImage(1) };
+            if (keyMap[e.key]) { e.preventDefault(); keyMap[e.key](); }
+        });
+        
+        // E. Obsługa URL po załadowaniu
+        const hash = window.location.hash;
+        if (hash.startsWith('#image-')) {
+            const index = parseInt(hash.substring(7));
+            if (!isNaN(index) && index >= 0 && index < images.length) {
+                setTimeout(() => openModal(index), 100);
+            }
+        }
     }
-  }
-});
-
-// === 🔥 Nasłuchujemy na zmianę hasha (URL po #) ===
-window.addEventListener('hashchange', () => {
-  const hash = window.location.hash;
-  if (hash) {
-    const index = parseInt(hash.replace('#image-', ''));
-    if (!isNaN(index) && images[index]) {
-      openModal(index);
-    }
-  }
-});
-
-const hash = window.location.hash;
-if (hash) {
-  const index = parseInt(hash.replace('#image-', ''));
-  if (!isNaN(index) && images[index]) {
-    openModal(index);
-  }
-}
-
-let currentGallery = [];
-let currentGalleryIndex = 0;
-
-
-// zmienianie zdjęć w modalach
-function showNextInGallery() {
-  if (currentGallery.length > 0) {
-    currentGalleryIndex = (currentGalleryIndex + 1) % currentGallery.length;
-    modalImage.src = currentGallery[currentGalleryIndex];
-    updateDots();
-  }
-}
-
-function showPrevInGallery() {
-  if (currentGallery.length > 0) {
-    currentGalleryIndex = (currentGalleryIndex - 1 + currentGallery.length) % currentGallery.length;
-    modalImage.src = currentGallery[currentGalleryIndex];
-    updateDots();
-  }
-}
-
-
-const nextGalleryButton = document.querySelector('.next-gallery');
-nextGalleryButton.addEventListener('click', showPrevInGallery);
-nextGalleryButton.innerHTML = "▴";
-nextGalleryButton.classList.add('gallery-nav', 'next-gallery');
-
-const prevGalleryButton = document.querySelector('.prev-gallery');
-prevGalleryButton.addEventListener('click', showNextInGallery);
-prevGalleryButton.innerHTML = "▴";
-prevGalleryButton.classList.add('gallery-nav', 'prev-gallery');
-
-const modalContent = document.querySelector('.modal-content');
-const buttonContainer = document.createElement('div');
-
-// kropeczki 
-
-function createDots(count) {
-  const dotContainer = document.querySelector('.dot-container');
-  dotContainer.innerHTML = ''; // usuń stare kropki
-
-  for (let i = 0; i < count; i++) {
-    const dot = document.createElement('span');
-    dot.classList.add('dot');
-    if (i === currentGalleryIndex) dot.classList.add('active');
-    dotContainer.appendChild(dot);
-  }
-}
-
-function updateDots() {
-  const dots = document.querySelectorAll('.dot');
-  dots.forEach((dot, index) => {
-    dot.classList.toggle('active', index === currentGalleryIndex);
-  });
-}
-
-function hideDots() {
-  const container = document.querySelector('.button-container');
-  if (currentGallery.length === 0) {
-    container.style.display = 'none';
-  }
-}
-
-function showDots() {
-  const container = document.querySelector('.button-container');
-  if (currentGallery.length !== 0) {
-    container.style.display = 'flex';
-  }
-}
-
-window.addEventListener('keydown', (event) => {
-
-  if (event.key === 'ArrowRight') {
-    showNext();
-  }
-
-  if (event.key === 'ArrowLeft') {
-    showPrev();
-  }
-
-  if (event.key === 'Escape') {
-    modal.style.display = 'none';
-    history.pushState(null, "", window.location.pathname);
-  }
-
-  if (event.key === 'ArrowUp') {
-    event.preventDefault();
-    showPrevInGallery();
-  }
-
-  if (event.key === 'ArrowDown') {
-    event.preventDefault();
-    showNextInGallery();
-  }
-
 });
